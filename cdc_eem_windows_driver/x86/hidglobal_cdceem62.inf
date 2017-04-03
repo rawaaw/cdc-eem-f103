@@ -1,0 +1,289 @@
+;
+; HID Global EEM driver Setup Information file V2.51
+; Copyright (c) 2013-2016 by HID Global
+;
+; This file supports:
+;     Windows 7          Windows 7 x64
+;     Windows 8          Windows 8 x64
+;     Windows 8.1        Windows 8.1 x64
+;     Windows 10         Windows 10 x64
+;
+
+
+;******************************************************************************
+; Version Section
+;------------------------------------------------------------------------------
+[Version]
+Signature="$Windows NT$"
+DriverVer=11/03/2016,2.51.0.0
+Provider=%S_Provider%
+CatalogFile=hidglobal_cdceem62.cat
+
+Class=net
+ClassGUID={4d36e972-e325-11ce-bfc1-08002be10318}
+
+
+;******************************************************************************
+; Manufacturer
+;------------------------------------------------------------------------------
+[Manufacturer]
+; Windows all systems starting W7
+%S_Mfg%=_Models, ntx86.6.1, ntamd64.6.1
+
+
+;******************************************************************************
+; Models Section
+;------------------------------------------------------------------------------
+; x86-based
+[_Models.ntx86.6.1]
+"HID USB CDC EEM Ethernet Adapter (5401)"=_Install62, USB\VID_076B&PID_5401&MI_01
+"HID USB CDC EEM Ethernet Adapter (5402)"=_Install62, USB\VID_076B&PID_5402&MI_01
+"HID USB CDC EEM Ethernet Adapter (5127)"=_Install62, USB\VID_076B&PID_5127&MI_01
+"HID USB CDC EEM Ethernet Adapter (5128)"=_Install62, USB\VID_076B&PID_5128&MI_01
+"HID USB CDC EEM Ethernet Adapter (5427)"=_Install62, USB\VID_076B&PID_5427&MI_01
+"HID USB CDC EEM Ethernet Adapter (5428)"=_Install62, USB\VID_076B&PID_5428&MI_01
+"HID USB CDC EEM Ethernet Adapter (2504)"=_Install62, USB\VID_09B0&PID_2504&MI_01
+"HID USB CDC EEM Ethernet Adapter (2505)"=_Install62, USB\VID_09B0&PID_2505&MI_01
+"HID USB CDC EEM Ethernet Adapter (2506)"=_Install62, USB\VID_09B0&PID_2506&MI_01
+"HID USB CDC EEM Ethernet Adapter (BF07)"=_Install62, USB\VID_076B&PID_BF07&MI_01
+
+; x64-based
+[_Models.ntamd64.6.1]
+"HID USB CDC EEM Ethernet Adapter (5401)"=_Install62, USB\VID_076B&PID_5401&MI_01
+"HID USB CDC EEM Ethernet Adapter (5402)"=_Install62, USB\VID_076B&PID_5402&MI_01
+"HID USB CDC EEM Ethernet Adapter (5127)"=_Install62, USB\VID_076B&PID_5127&MI_01
+"HID USB CDC EEM Ethernet Adapter (5128)"=_Install62, USB\VID_076B&PID_5128&MI_01
+"HID USB CDC EEM Ethernet Adapter (5427)"=_Install62, USB\VID_076B&PID_5427&MI_01
+"HID USB CDC EEM Ethernet Adapter (5428)"=_Install62, USB\VID_076B&PID_5428&MI_01
+"HID USB CDC EEM Ethernet Adapter (2504)"=_Install62, USB\VID_09B0&PID_2504&MI_01
+"HID USB CDC EEM Ethernet Adapter (2505)"=_Install62, USB\VID_09B0&PID_2505&MI_01
+"HID USB CDC EEM Ethernet Adapter (2506)"=_Install62, USB\VID_09B0&PID_2506&MI_01
+"HID USB CDC EEM Ethernet Adapter (BF07)"=_Install62, USB\VID_076B&PID_BF07&MI_01
+
+
+;******************************************************************************
+; Control Flags Sections
+;------------------------------------------------------------------------------
+[ControlFlags]
+ExcludeFromSelect=*
+
+
+;******************************************************************************
+; Install sections x86-based systems
+;------------------------------------------------------------------------------
+[_Install62.ntx86]
+; NCF_PHYSICAL + NCF_HAS_UI
+Characteristics = 0x84   
+; bus type = PnP Bus: 15 
+BusType         = 15                     
+; driver version under XP
+DriverVer       = 11/03/2016,2.51.0.0
+AddReg = _AddReg_SW, _AddReg_SW62
+CopyFiles=_CopyFiles_sys62
+*IfType            = 0x6 ; IF_TYPE_ETHERNET_CSMACD
+*MediaType         = 0x0 ; NdisMedium802_3
+*PhysicalMediaType = 0x0 ; NdisPhysicalMediumUnspecified
+
+[_Install62.ntx86.Services]
+AddService = hidglobal_cdceem, 0x00000002, _AddService62, _EventLog62
+
+[_AddService62]
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; MANUAL
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\hidglobal_cdceem62.sys
+AddReg=_AddReg_Service
+
+[_EventLog62]
+AddReg=_EventLog_AddReg62
+
+[_EventLog_AddReg62]
+HKR,,EventMessageFile,%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\netevent.dll;%%SystemRoot%%\System32\drivers\hidglobal_cdceem62.sys"
+HKR,,TypesSupported,  %REG_DWORD%, 7
+
+
+;******************************************************************************
+; Install sections x64-based systems
+;------------------------------------------------------------------------------
+[_Install62.ntamd64]
+; NCF_PHYSICAL + NCF_HAS_UI
+Characteristics = 0x84   
+; bus type = PnP Bus: 15 
+BusType         = 15                     
+; driver version under XP
+DriverVer       = 11/03/2016,2.51.0.0
+AddReg = _AddReg_SW
+CopyFiles=_CopyFiles_sys62_x64
+*IfType            = 0x6 ; IF_TYPE_ETHERNET_CSMACD
+*MediaType         = 0x0 ; NdisMedium802_3
+*PhysicalMediaType = 0x0 ; NdisPhysicalMediumUnspecified
+
+[_Install62.ntamd64.Services]
+AddService = hidglobal_cdceem, 0x00000002, _AddService62_x64, _EventLog62_x64
+
+[_AddService62_x64]
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; MANUAL
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\hidglobal_cdceem62_x64.sys
+AddReg=_AddReg_Service
+
+[_EventLog62_x64]
+AddReg=_EventLog_AddReg62_x64
+
+[_EventLog_AddReg62_x64]
+HKR,,EventMessageFile,%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\netevent.dll;%%SystemRoot%%\System32\drivers\hidglobal_cdceem62_x64.sys"
+HKR,,TypesSupported,  %REG_DWORD%, 7
+
+
+;******************************************************************************
+; Registry sections
+;------------------------------------------------------------------------------
+[_AddReg_SW]
+HKR, Ndi,               Service,        0, hidglobal_cdceem
+HKR, Ndi\Interfaces,    UpperRange,     0, "ndis5" 
+HKR, Ndi\Interfaces,    LowerRange,     0, "ethernet"
+
+HKR,,*NdisDeviceType, %REG_DWORD%, 1   ; 0 for network adapter with physical Ethernet, 1 for control interface
+HKR,,DefaultMediaState,%REG_DWORD%, 1
+HKR,,MediaStateAfterPowerDown,%REG_DWORD%, 1
+HKR,,OneByteTermination,%REG_DWORD%, 1
+
+; in units of 1 bps
+; default speeds are reported as long as no information form the device is available
+HKR,,DefaultXmitLinkSpeed,%REG_DWORD%,12000000
+HKR,,DefaultRcvLinkSpeed,%REG_DWORD%,12000000
+; maximum speed of the device 
+HKR,,MaxXmitLinkSpeed,%REG_DWORD%,12000000
+HKR,,MaxRcvLinkSpeed,%REG_DWORD%,12000000
+
+; set the minimum Ethernet packet size
+; shorter packets are padded with 0 to this size
+; set this parameter to 0 means no padding
+;HKR,,MinPacketSizeToPad,%REG_DWORD%, 0
+
+; the configuration index for the device
+; some devices may expose the network interface on a configuration different from 0
+; we have seen this in some Linux Gadget implementations
+HKR,,ConfigurationIndex,%REG_DWORD%, 0
+
+; set this to 1 to force the driver to send a clear feature endpoint halt on start
+HKR,,SendClearEpHaltOnStart,%REG_DWORD%, 0
+
+; the vendor description is shown by some programs 
+HKR,,VendorDescription,%REG_SZ%, %S_VendorDescription%
+
+; when this period in ms has been elapsed without a transferred Tx packet the NDIS
+; layer forces a adapter reset
+HKR,,TxTimeout,%REG_DWORD%, 2000
+
+; set to 1 if the device can wake the PC on magic packet
+HKR,,CapWakeOnMagicPacket,%REG_DWORD%, 0
+; set to 1 if the device can wake the PC on link up
+HKR,,CapWakeOnLinkUp,%REG_DWORD%, 0
+
+; *** do to ***
+; delete the following blocks if not required for your device 
+
+; Network Address
+;HKR, Ndi\params\NetworkAddress,         ParamDesc,     0, "MAC address"
+;HKR, Ndi\params\NetworkAddress,         Default,       0, ""
+;HKR, Ndi\params\NetworkAddress,         type,          0, "edit"
+;HKR, NDI\params\NetworkAddress,         LimitText,     0, "12"
+;HKR, NDI\params\NetworkAddress,         UpperCase,     0, "1"
+;HKR, NDI\params\NetworkAddress,         optional,      0, "1"
+
+; VLAN ID
+;HKR, Ndi\params\VlanID,                 ParamDesc,     0, "VLAN ID"
+;HKR, Ndi\params\VlanID,                 default,       0, "0"
+;HKR, Ndi\params\VlanID,                 type,          0, "long"
+;HKR, Ndi\params\VlanID,                 min,           0, "0"
+;HKR, Ndi\params\VlanID,                 max,           0, "4094"
+;HKR, Ndi\params\VlanID,                 step,          0, "1"
+;HKR, Ndi\params\VlanID,                 base,          0, "10"
+
+;HKR, Ndi\params\*PriorityVLANTag,       ParamDesc,     0, "Priority and Vlan"
+;HKR, Ndi\params\*PriorityVLANTag,       default,       0, "0"
+;HKR, Ndi\params\*PriorityVLANTag,       type,          0, "enum"
+;HKR, Ndi\params\*PriorityVLANTag\enum,  "0",           0, "Disabled"
+;HKR, Ndi\params\*PriorityVLANTag\enum,  "1",           0, "Packet priority enabled"
+;HKR, Ndi\params\*PriorityVLANTag\enum,  "2",           0, "VLAN Enabled"
+;HKR, Ndi\params\*PriorityVLANTag\enum,  "3",           0, "Packet priority and VLAN enabled"
+
+[_AddReg_SW62]
+; number of Rx buffers in the driver 
+HKR,,RxBuffers,%REG_DWORD%, 4
+; number of Rx buffers submitted to the USB HC driver
+HKR,,RxBuffersSubmitted,%REG_DWORD%, 4
+; number of Tx buffers
+HKR,,TxBuffers,%REG_DWORD%, 4
+
+[_AddReg_Service]
+HKR,Parameters,,,
+
+
+;******************************************************************************
+; Destination Directories
+;------------------------------------------------------------------------------
+[DestinationDirs]
+DefaultDestDir  = 12  ; %windir%\system32\drivers 
+_CopyFiles_sys62 = 12
+_CopyFiles_sys62_x64 = 12
+
+
+;******************************************************************************
+; Disk Layout
+;------------------------------------------------------------------------------
+[SourceDisksNames.x86]
+1=%S_DiskName%,,0
+
+[SourceDisksNames.amd64]
+1=%S_DiskName%,,0
+
+[SourceDisksFiles.x86]
+hidglobal_cdceem62.sys=1
+
+[SourceDisksFiles.amd64]
+hidglobal_cdceem62_x64.sys=1
+
+
+;******************************************************************************
+; Copy file sections
+;------------------------------------------------------------------------------
+[_CopyFiles_sys62]
+; Note: no string variable possible in this section !
+; Use COPYFLG_NOVERSIONCHECK for each file to suppress pop-up dialogs if newer files are overwritten.
+hidglobal_cdceem62.sys,,,0x00000004
+
+[_CopyFiles_sys62_x64]
+; Note: no string variable possible in this section !
+; Use COPYFLG_NOVERSIONCHECK for each file to suppress pop-up dialogs if newer files are overwritten.
+hidglobal_cdceem62_x64.sys,,,0x00000004
+
+
+;******************************************************************************
+; Strings
+;------------------------------------------------------------------------------
+[Strings]
+;
+; Non-Localizable Strings, DO NOT MODIFY!
+;
+REG_SZ         = 0x00000000
+REG_MULTI_SZ   = 0x00010000
+REG_EXPAND_SZ  = 0x00020000
+REG_BINARY     = 0x00000001
+REG_DWORD      = 0x00010001
+
+;
+; Localizable Strings, modify as required
+;
+; provider
+S_Provider="HID Global" 
+S_Mfg="HID Global"
+
+S_VendorDescription="Thesycon EEM network adapter"
+
+; disk name
+S_DiskName="HID Global EEM driver driver disk"
+
+;;;;;;;;;;;;;;;;;;;;;; EOF ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

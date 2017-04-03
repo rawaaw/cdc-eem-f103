@@ -1,0 +1,1 @@
+USBD_CDC_EEM_ReceivePacket -> USBD_LL_PrepareReceive -> HAL_PCD_EP_Receive
