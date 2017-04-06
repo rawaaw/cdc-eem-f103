@@ -157,20 +157,24 @@ USBD_CDC_EEM_HandleTypeDef;
 
 
 typedef enum _eem_receiver_state_enum {
-  EEM_RECEIVER_INITIAL = 0,
-  EEM_RECEIVER_CMD_IN_PROGRESS = 1,
-  EEM_RECEIVER_CMD_DONE = 2,
+  EEM_RECEIVER_INITIAL          = 0,
+  EEM_RECEIVER_CMD_IN_PROGRESS  = 1,
+  EEM_RECEIVER_CMD_DONE         = 2,
   EEM_RECEIVER_DATA_IN_PROGRESS = 3,
-  EEM_RECEIVER_DATA_DONE = 4,
+  EEM_RECEIVER_DATA_DONE        = 4,
 
-  EEM_RECEIVER_FAULT = 0xFF
+  EEM_RECEIVER_FAULT            = 0xFF
 }eem_receiver_state_enum;
 
 
 typedef enum _eem_transmitter_state_enum {
-  EEM_TRANSMITTER_INITIAL = 0,
-  EEM_TRANSMITTER_SEND_DATA = 1,
-  EEM_TRANSMITTER_SEND_ZPKT= 2,
+  EEM_TRANSMITTER_INITIAL       = 0,
+  EEM_TRANSMITTER_SEND_DATA     = 1,
+  EEM_TRANSMITTER_SENDING_ZPKT  = 2,
+  EEM_TRANSMITTER_SENT_ZPKT     = 3,
+  EEM_TRANSMITTER_SEND_EEM_ZPKT = 4,
+
+  EEM_TRANSMITTER_FAULT         = 0xFF
 }eem_transmitter_state_enum;
 
 typedef enum _eem_packet_type_enum {

@@ -179,11 +179,11 @@ static uint32_t process_ip_timers(USBD_CDC_EEM_HandleTypeDef*hcdc,
     }
   }else{
     /* send zero eem packet */
-#if 0
+#if 0 /* code added for experiment */
     hcdc->tx_buffer[0] = 0;
     hcdc->tx_buffer[1] = 0;
     hcdc->tx_length = 2;
-    USBD_CDC_EEM_TransmitPacket(&hUsbDeviceFS, EEM_TRANSMITTER_SEND_ZPKT);
+    USBD_CDC_EEM_TransmitPacket(&hUsbDeviceFS, EEM_TRANSMITTER_SEND_EEM_ZPKT);
 #endif
   }
   return uip_len;
@@ -260,10 +260,13 @@ int main(void) {
            /* rx_cnt_sent increased after packet sent in USBD_CDC_EEM_DataIn() */
            while (hcdc->tx_state != EEM_TRANSMITTER_INITIAL)
              ;
-           hcdc->tx_length = tx_len;
-           hcdc->tx_buffer = buf;
-           while (USBD_CDC_EEM_TransmitPacket(&hUsbDeviceFS, EEM_TRANSMITTER_SEND_DATA) == USBD_BUSY)
-             ;
+           if (hcdc->rx_cnt_sending > hcdc->rx_cnt_sent) {
+             buf = get_eem_pkt_buffer(EEM_RX_BUFFER, hcdc->rx_cnt_sent, NULL);
+             hcdc->tx_buffer = buf;
+             hcdc->tx_length = get_eem_pkt_size(buf) + 2;
+             while (USBD_CDC_EEM_TransmitPacket(&hUsbDeviceFS, EEM_TRANSMITTER_SEND_DATA) == USBD_BUSY)
+               ;
+           }
         }
 
       }else{

@@ -562,6 +562,11 @@ static uint8_t  USBD_CDC_EEM_DataIn (USBD_HandleTypeDef *pdev, uint8_t epnum) {
     if (hcdc->tx_state == EEM_TRANSMITTER_SEND_DATA){
       tx_len = (hcdc->tx_length >= CDC_EEM_DATA_FS_IN_PACKET_SIZE) ? CDC_EEM_DATA_FS_IN_PACKET_SIZE:hcdc->tx_length;
       if (tx_len != 0){
+#if 0 /* code added for experiment */
+        if (tx_len < CDC_EEM_DATA_FS_IN_PACKET_SIZE){
+          hcdc->tx_state = EEM_TRANSMITTER_SENDING_ZPKT;
+        }
+#endif
         tx_buf = hcdc->tx_buffer;
 
         hcdc->tx_buffer += tx_len;
@@ -571,14 +576,33 @@ static uint8_t  USBD_CDC_EEM_DataIn (USBD_HandleTypeDef *pdev, uint8_t epnum) {
                                             tx_buf,
                                             tx_len)) == USBD_BUSY)
           ;
-        if (ret_code != USBD_OK) 
+        if (ret_code != USBD_OK) {
+          hcdc->tx_state = EEM_TRANSMITTER_FAULT;
           return ret_code;
+        }
       }else
       {
         hcdc->tx_state = EEM_TRANSMITTER_INITIAL;
         hcdc->rx_cnt_sent ++;
       }
-    }else if (hcdc->tx_state == EEM_TRANSMITTER_SEND_ZPKT){
+#if 0 /* code added for experiment */
+    }else if (hcdc->tx_state == EEM_TRANSMITTER_SENDING_ZPKT){
+      hcdc->tx_state = EEM_TRANSMITTER_SENT_ZPKT;
+      while ((ret_code = USBD_LL_Transmit(pdev,
+                                          CDC_EEM_IN_EP,
+                                          hcdc->tx_buffer,
+                                          0)) == USBD_BUSY)
+        ;
+      if (ret_code != USBD_OK) {
+        hcdc->tx_state = EEM_TRANSMITTER_FAULT;
+        return ret_code;
+      }
+    }
+    else if (hcdc->tx_state == EEM_TRANSMITTER_SEND_EEM_ZPKT ||
+             hcdc->tx_state == EEM_TRANSMITTER_SENT_ZPKT){
+#else
+    }else if (hcdc->tx_state == EEM_TRANSMITTER_SEND_EEM_ZPKT){
+#endif
       /* sent 2 bytes */
       hcdc->tx_state = EEM_TRANSMITTER_INITIAL;
     }else{
